@@ -1,0 +1,142 @@
+class Runner {
+  constructor(player, road) {
+    this.player = {
+      ...player,
+      attributes: {
+        height: player.attributes.height,
+        width: player.attributes.width,
+        power: player.attributes.power,
+        speed: player.attributes.speed || 0,
+        health: player.attributes.health || 100,
+      },
+      inventory: [], // Store collected power-ups or items
+      score: 0,      // Player's score
+    };
+
+    this.road = {
+      ...road,
+      details: {
+        left: road.details.left,
+        right: road.details.right,
+        buildings: road.details.buildings,
+        obstacles: road.details.obstacles || [],
+        powerUps: road.details.powerUps || [],
+      },
+      length: road.length || 1000, // Default road length
+    };
+  }
+
+  // Display player and road details
+  displayDetails() {
+    console.log("Player Details:", this.player);
+    console.log("Road Details:", this.road);
+  }
+
+  // Start running
+  run() {
+    console.log("Player is running...");
+    this.player.attributes.speed += 5; // Increment speed when running
+    this.updateScore(10); // Add score for running
+  }
+
+  // Jump over an obstacle
+  jump() {
+    console.log("Player is jumping...");
+    this.updateScore(5); // Add score for jumping
+  }
+
+  // Collect a power-up
+  collectPowerUp(powerUp) {
+    this.player.inventory.push(powerUp);
+    console.log(`Player collected ${powerUp} power-up!`);
+    this.updateScore(20); // Add score for collecting power-up
+  }
+
+  // Encounter an obstacle
+  encounterObstacle(obstacle) {
+    console.log(`Player encountered ${obstacle} obstacle!`);
+    this.updateHealth(-10); // Decrease health on obstacle hit
+  }
+
+  // Update health
+  updateHealth(healthChange) {
+    this.player.attributes.health += healthChange;
+    if (this.player.attributes.health <= 0) {
+      this.player.attributes.health = 0;
+      console.log("Player is out of health! Game over.");
+    } else {
+      console.log(`Player's health updated to ${this.player.attributes.health}!`);
+    }
+  }
+
+  // Update speed
+  updateSpeed(speedChange) {
+    this.player.attributes.speed += speedChange;
+    console.log(`Player's speed updated to ${this.player.attributes.speed}!`);
+  }
+
+  // Update score
+  updateScore(points) {
+    this.player.score += points;
+    console.log(`Player's score updated to ${this.player.score}!`);
+  }
+
+  // Check player status
+  checkStatus() {
+    console.log("Current Status:");
+    console.log(`Health: ${this.player.attributes.health}`);
+    console.log(`Speed: ${this.player.attributes.speed}`);
+    console.log(`Score: ${this.player.score}`);
+    console.log(`Inventory: ${this.player.inventory.join(", ") || "Empty"}`);
+  }
+
+  // Reset player attributes
+  resetPlayer() {
+    this.player.attributes.speed = 0;
+    this.player.attributes.health = 100;
+    this.player.inventory = [];
+    this.player.score = 0;
+    console.log("Player has been reset to default state.");
+  }
+}
+
+// Example Usage
+const player = {
+  name: "Wasi",
+  attributes: {
+    height: 6,
+    width: 2,
+    power: 10,
+    speed: 0,
+    health: 100,
+  },
+};
+
+const road = {
+  name: "Main Road",
+  details: {
+    left: "Trees",
+    right: "River",
+    buildings: ["House", "Shop"],
+    obstacles: ["Rock", "Pothole"],
+    powerUps: ["Speed Boost", "Health Pack"],
+  },
+  length: 500,
+};
+
+const runner = new Runner(player, road);
+
+runner.displayDetails();
+runner.run();
+runner.jump();
+runner.collectPowerUp("Speed Boost");
+runner.encounterObstacle("Rock");
+runner.updateHealth(-50);
+runner.updateSpeed(10);
+runner.checkStatus();
+runner.resetPlayer();
+runner.checkStatus();
+
+
+
+> Astro
